@@ -1,17 +1,93 @@
 {
   "profile": {
-    "name": "[First] [Last]",
-    "role": "[Role] · [Team]",
-    "tagline": "[One sentence — your focus areas and what you're working toward.]",
-    "location": "[City, Country]",
+    "name": "Kristijan Ilie",
+    "role": "Security Analyst * Blue Team",
+    "tagline": "KQL enthusiast building AI-augmented workflows, IP enrichment tooling, and a playbook for every alert imaginable.",
+    "location": "Brisbane, Australia",
     "photo": "",
     "theme": "operator",
     "links": {
-      "linkedin": "",
-      "github": "",
+      "linkedin": "www.linkedin.com/in/kristijan-i-6862b8201/",
+      "github": "https://github.com/SfSec",
       "email": ""
     }
   },
   "alerts": [],
-  "bec": []
+  "bec": [
+    {
+      "id": "BEC-001",
+      "caseName": "Project Victoria",
+      "caseReference": "WDL-BEC-2026-001",
+      "affectedAccount": "Donald Anderson (compromised), Naomi Hunter (targeted counterparty)",
+      "incidentDateFrom": "2026-03-07",
+      "incidentDateTo": "2026-03-15",
+      "investigationDate": "",
+      "attackNarrative": "Between 7 and 10 March 2026, an unauthorised party gained access to the email account of Donald\nAnderson and used it to attempt a business email compromise (BEC) — a fraud in which an attacker,\noperating from a legitimate internal account, conducts deceptive correspondence with a third party.\nOver this period the account was accessed from multiple external IP addresses inconsistent with the\nuser's normal activity.\nEarly in the intrusion, the attacker created a hidden mailbox rule designed to conceal incoming replies\nfrom the targeted correspondent (Naomi Hunter), ensuring the legitimate account owner would not see\nthe fraudulent exchange. The attacker then accessed and downloaded a number of files from\nSharePoint, created and sent an email titled \"Report\" from the compromised account, and subsequently\ndeleted the sent message to avoid detection — behaviour consistent with a deliberate, staged\noperation rather than opportunistic access.\nThe activity went undetected for approximately five days until 15 March 2026, when a suspicious email\nreported to the administrator prompted investigation. The compromised account was contained and its\npassword reset. The mechanism of initial access and whether any downloaded data left the\nenvironment remain under review.",
+      "timeline": [
+        {
+          "time": "7 March 2026 12:49:55 PM",
+          "activity": "First unauthorised sign-in using the Donald account",
+          "detail": "IP: 54[.]206[.]115[.]107 Client: donald[.]anderson[@]wdlabs[.]com[.]au Extra contexts: Signed in via OWA, opening the Donald account mailbox for initial access."
+        },
+        {
+          "time": "9 March 2026 5:01:07 PM - 5:10:45 PM.",
+          "activity": "Donald’s account accessed 5 emails",
+          "detail": "IP: 91[.]217[.]249[.]193 Client: donald[.]anderson[@]wdlabs[.]com[.]au Extra contexts: Donald account observed accessing multiple different emails to observe for reconnaissance to gather information about the victim asset."
+        },
+        {
+          "time": "9 March 2026 5:10:45 PM",
+          "activity": "Among emails being accessed Donald account created new Inbox Rule",
+          "detail": "IP: 91[.]217[.]249[.]193:17130 Client: donald[.]anderson[@]wdlabs[.]com[.]au Extra contexts: Email rule was created called “.” to move emails from Naomi account to RSS feeds and Mark as Read. This means if Donald glanced at the folder list, nothing would draw his eye. Additionally, the unauthorised party made sure to prevent further rules from applying to surface the mail when it has been intentionally hidden by this first rule. T1564.008 —(Email Hiding Rules)"
+        },
+        {
+          "time": "9 March 2026 5:20:28 PM - 5:26:38 PM",
+          "activity": "Donald's account accessed the company sharepoint",
+          "detail": "IP: 45[.]133[.]5[.]24 Client: donald[.]anderson[@]wdlabs[.]com[.]au Extra contexts: The Donald account searched and downloaded various company SharePoint files."
+        },
+        {
+          "time": "10 March 2026 7:33:45 PM",
+          "activity": "Donald’s account authored an unauthorised email",
+          "detail": "IP: 104[.]234[.]32[.]142 Client: donald[.]anderson[@]wdlabs[.]com[.]au Extra contexts: The Donald account created a email with Exchange Item ID “LgAAAAB7v8slKtVETrcRaS1f5gjaAQADbzp KDkyFTZHbmG6YAd29AAAAAAEPAAAB” in the Drafts folder of the Donald account mailbox."
+        },
+        {
+          "time": "10 March 2026 7:43:34PM – 7:44:37PM",
+          "activity": "Donald’s account accessed SharePoint and viewed recently used/created documents",
+          "detail": "IP: 173[.]239[.]229[.]83 Client: donald[.]anderson[@]wdlabs[.]com[.]au Extra contexts: The Donald account performed reconnaissance against SharePoint, using Donald’s recent-document history to identify high-value content and enumerating SitePages by author to map internal roles and relationships which is consistent with target selection for a Business Email Compromise. T1213 — Data from Information Repositories T1087 — Account Discovery"
+        },
+        {
+          "time": "10 March 2026 7:51:40 PM",
+          "activity": "Suspicious email sent",
+          "detail": "An email titled ‘Report’ was sent from the account (Send), from 104[.]234[.]32[.]143. The fraudulent message to the counterparty Naomi Hunter appears to be the objective of the BEC."
+        },
+        {
+          "time": "10 March 2026 8:15:56 PM",
+          "activity": "Sent item deleted",
+          "detail": "An item was moved to Deleted Items (MoveToDeletedItems), from 104[.]234[.]32[.]143. Send-then-delete is concealment, consistent with the earlier inboxrule behaviour."
+        },
+        {
+          "time": "15 March 2026 3:07:37 PM",
+          "activity": "Detection",
+          "detail": "Admin Dalan began investigating a report of a suspicious email from Donald Anderson to Naomi Hunter. ~5 days between last attacker activity (10 Mar) and detection."
+        },
+        {
+          "time": "-",
+          "activity": "Remediation",
+          "detail": "Account password reset. Remediation actions completed (no log timestamp — response action, not an observed attack event)."
+        }
+      ],
+      "initialAccess": "On 7 March 2026 12:49:55 PM GMT10+, the first unauthorised sign-in to the Donald Account from IP\naddress 54[.]206[.]115[.]107 (AWS IP) via Outlook Web App (OWA).\nFollowing authentication, the session accessed five email items.\nThe sign-in originated from infrastructure inconsistent with the account’s established baseline.",
+      "unauthorisedActivity": "On 9 March 2026 at 5:10:45 PM GMT10+ the Donald Account created a new inbox rule named “.”.\nFrom the IP address 91[.]217[.]249[.]193 (Germany, Berlin – VPN provider) The inbox rule moved all\nincoming emails from Naomi.Hunter@wdlabs.com.au marked them as read and moved them to the\n‘RSS Feeds’ folder. [Comment: The inbox rule was created before any unauthorised outbound email\nwas observed, indicating it was established preparatory to the fraudulent activity rather than in\nreaction to it. By automatically removing Naomi Hunter's incoming messages from view, the rule\nensured that once the unauthorised party began corresponding with Naomi using the Donald account,\nthe legitimate account holder would not see her replies — allowing the fraudulent exchange to\ncontinue undetected. ]",
+      "dataAccess": "Two days after initial access, on 9 March 2026, the unauthorised party authenticated as the Donald\naccount conducted the most significant data-access activity of the incident. Between 5:20 PM and\n5:26 PM, the session performed a series of SharePoint/OneDrive operations recorded as\nFilePreviewed (16 events), FileAccessed (17 events) and, most significantly, FileDownloaded (13\nevents) — twelve files downloaded from IP 45[.]133[.]5[.]24 and 45[.]133[.]5[.]15 on 9 March, and one\nfurther download from 173[.]239[.]229[.]83 on 10 March.\nOn the mail side, MailItemsAccessed events were recorded across 7–10 March (8 events), consistent\nwith the session reading mailbox contents. On 10 March the session also created an item (7:33:45\nPM), sent an item (Send, 7:51:40 PM) and subsequently moved an item to Deleted Items\n(MoveToDeletedItems, 8:15:56 PM).\n[Comment: The volume and clustering of FileDownloaded events represents the clearest evidence of\npotential exfiltration in the incident — these are full file retrievals, distinct from the\nFilePreviewed/FileAccessed events which indicate viewing only. The Send followed by\nMoveToDeletedItems on 10 March is consistent with the unauthorised party sending mail from the\naccount and then deleting it from the Sent/visible folders to conceal the activity, consistent with the\nearlier inbox-rule concealment behaviour.]",
+      "lessonsLearned": "I think I learned a lot about how to do a proper investigation and putting it into a report that is\ndetailed. I accept my documentation is good but the way I do it (template it) needs to be\nbetter. To me the important thing is to learn the process, improve the process and make\nsure its replicable. And then (ideally) to automate the process.\n\nI learned a great deal about the different views in Sentinel and where to look for indicators of\ncompromise. I used my natural curiosity to correlate different pieces of information like time,\ndate, client ip, location, with public resources like abuseipdb or ip-api to a known indicator of\ncompromise and used that to inform the rest of my investigation.\n\nI learned a lot about how to use KQL and how to correlate different bits of useful information\nin Sentinel’s KQL to search for additional instances of malicious activity that would not have\nbeen possible if I didn’t double check for additional activity performed by client session IDs.\nI think what I would do differently is create & use a findings/reporting template so that I can\ninform future investigations more cleanly and more effectively.\n\nObsidian is fine for note-taking, but I need to perhaps focus on translating the Excel\nspreadsheets I curate into something that explains itself better, not just looks pretty.\nAnd to provide that additional context throughout instead of a little bit here and little bit there.\nAnd I learned about defanging IPs to prevent accidental clicks on malicious URLs during\nthreat analysis.\n\nLastly, A middle-ground KQL trick if I want readable output without losing fields: use `projectreorder` or `project-away` instead. `project-reorder TimeGenerated, Operation, UserId,\nClientIP` puts the columns I care about first but keeps everything else still hanging off the\nrow. `project-away` lets me drop just the noise (e.g. `OrganizationId`, `RecordType`) while\nkeeping the rest. Best of both worlds when I’m still in discovery mode.",
+      "tools": [
+        "Microsoft Sentinel",
+        "KQL",
+        "AbuseIPDB",
+        "Microsoft Excel"
+      ],
+      "pdfUrl": "https://github.com/SfSec/soc-investigation-portfolio/blob/main/bec/BEC_Investigation_projectvictoria.pdf",
+      "customSections": [],
+      "verified": true
+    }
+  ]
 }
