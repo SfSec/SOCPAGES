@@ -2,7 +2,7 @@
 
 A personal case-study portfolio for WDLabs / SOCSIM members. You own the content; the brand system and layout are locked.
 
----
+--- 
 
 ## Member setup — four steps
 
